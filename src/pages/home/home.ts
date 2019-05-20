@@ -22,4 +22,8 @@ export class HomePage {
       noteParam: note
     });
   }
+
+  onAddClick (){
+    this.navCtrl.push('DetailPage');
+    }
 }

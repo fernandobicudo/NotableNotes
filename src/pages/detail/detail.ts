@@ -19,11 +19,23 @@ export class DetailPage {
 
   note;
 
+  newNoteFlag = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private noteService: NoteService, private alertController: AlertController) {
     this.note = this.navParams.get("noteParam");
-    console.log("nav-param", this.note);
+    //console.log("nav-param", this.note);
 
+    if (!this.note) {
+      this.note = {
+        id: "",
+        date: "",
+        title: "",
+        content: ""
+      };
+      this.newNoteFlag = true;
+    }
   }
+
 
   onTrash() {
     let confirm = this.alertController.create({
@@ -35,7 +47,7 @@ export class DetailPage {
         },
         {
           text: "Confirm",
-          handler: ()=>{
+          handler: () => {
             this.noteService.removeNote(this.note);
             this.navCtrl.pop();
           }
@@ -47,5 +59,11 @@ export class DetailPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DetailPage');
+  }
+
+
+  ionViewWillLeave() {
+    if (this.newNoteFlag)
+      this.noteService.addNote(this.note);
   }
 }
